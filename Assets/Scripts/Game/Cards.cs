@@ -9,26 +9,21 @@ public class Cards : MonoBehaviour
 
     public GameManager gameManager;
 
-    private bool isFlipped;
+    public bool isFlipped = false;
+    public bool isMatched = false;
     public Image cardImage;
 
     void Start()
     {
-        isFlipped = false;
-        //cardImage.sprite = GameManager.Instance.cardBack; //to show back ofcard
-        if (cardImage != null && GameManager.Instance != null && GameManager.Instance.cardBack != null)
-        {
-            cardImage.sprite = GameManager.Instance.cardBack; // to show back of card
-        }
-        else
-        {
-            Debug.LogError("cardImage or GameManager.Instance.cardBack is null!");
-        }
+        ResetCard();
     }
 
+    
     public void FlipCard()
     {
-        if(!isFlipped && gameManager.firstCard == null || gameManager.secondCard == null)
+        if (isMatched) return;
+
+        if (!isFlipped && (gameManager.firstCard == null || gameManager.secondCard == null))
         {
             isFlipped = true;
             cardImage.sprite = gameManager.cardFaces[cardID];
@@ -36,10 +31,29 @@ public class Cards : MonoBehaviour
         }
     }
 
+    public void ResetCard()
+    {
+        isFlipped = false;
+        isMatched = false;
+        if (cardImage != null && gameManager != null && gameManager.cardBack != null)
+        {
+            cardImage.sprite = gameManager.cardBack;
+        }
+        else
+        {
+            Debug.LogError("cardImage or GameManager.cardBack is null!");
+        }
+    }
+
     public void HideCard()
     {
         isFlipped = false;
         cardImage.sprite = gameManager.cardBack;
+    }
+    public void SetMatched(bool matched)
+    {
+        isMatched = matched;
+        // add matched animation and sound here  
     }
 }
 

@@ -1,12 +1,17 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameMode pendingMode = GameMode.Easy;
+    public static bool usePendingMode = false;
+
     public static GameManager Instance;
+
+    public enum GameMode { Easy, Medium, Hard }
+    public GameMode currentMode;
 
     public Cards cardPrefab;
     public Sprite cardBack; // shows the back of the card
@@ -16,19 +21,23 @@ public class GameManager : MonoBehaviour
 
     private List<int> cardIDs; // card ids
 
-    public Cards firstCard,secondCard; // to check for flipped cards
+    public Cards firstCard, secondCard; // to check for flipped cards
 
     public Transform cardHolder; // the panel that has grid layout
 
     public GameObject finalUI;
     public TextMeshProUGUI finalText;// gameOVer text
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI movesText;
 
 
     private int pairsMatched;
     private int totalPairs;
     private float timer;
     private bool isGameOver;
+    private int score;
+    private int movesPlayed;
 
     private bool isLevelFinished;
 
@@ -43,50 +52,95 @@ public class GameManager : MonoBehaviour
     {
         cards = new List<Cards>();
         cardIDs = new List<int>();
-        pairsMatched = 0; // zero pairs matched at the start of the game
-        totalPairs = cardFaces.Length / 2; // card faces are 6 but pairs are 12 hence half
 
-        timer = maxTime;
-        isGameOver = false; 
-        isLevelFinished = false;
-
-        CreateCards();
-        ShuffleCards();
         finalUI.gameObject.SetActive(false);
 
-        
+        if(usePendingMode)
+        {
+            SetGameMode(pendingMode);
+            usePendingMode = false;
+        }
+
+        Debug.Log("GameManager Start(): timer=" + timer);
     }
     void Update()
     {
         if (!isGameOver && !isLevelFinished)
         {
-            if(timer > 0)
+            if (timer > 0)
             {
                 timer -= Time.deltaTime;
-                UpdateTImerText();
+                UpdateUI();
 
             }
             else
             {
-                GameOver();
+                //GameOver();
             }
 
         }
     }
 
-    void CreateCards()
+    public void SetGameMode(GameMode mode)
     {
-        for (int i = 0; i < cardFaces.Length / 2; i++)
+        currentMode = mode;
+        Debug.Log("SetGameMode called with mode: " + mode);
+
+        switch (mode)
         {
-            cardIDs.Add(i); // adding cardID to the first card in the pair
-            cardIDs.Add(i); // same but to the second card in the pair
+            case GameMode.Easy:
+                totalPairs = 2; 
+                break;
+            case GameMode.Medium:
+                totalPairs = 4;
+                break;
+            case GameMode.Hard:
+                totalPairs = 6;
+                break;
         }
-        foreach(int id in cardIDs) // spwaning cards shuffled as per their iD's
+
+        Debug.Log("SetGameMode(): timer=" + timer);
+        pairsMatched = 0;
+        score = 0;
+        movesPlayed = 0;
+        timer = maxTime;
+        isGameOver = false;
+        isLevelFinished = false;
+
+        foreach (var card in cards)
         {
-            Cards newcards = Instantiate(cardPrefab, cardHolder); // instantiating the cardprefab to the grid layout
-            newcards.gameManager = this; // linking the gamemanager to the Cards 
-            newcards.cardID = id; // Card ID assigned 
-            cards.Add(newcards); 
+            Destroy(card.gameObject);
+        }
+        cards.Clear();
+        cardIDs.Clear();
+
+        GenerateBoard();
+
+        finalUI.SetActive(false);
+        UpdateUI();
+    }
+
+    public void GenerateBoard()
+    {
+        cardIDs = new List<int>();
+        for (int i = 0; i < totalPairs; i++)
+        {
+            cardIDs.Add(i);
+            cardIDs.Add(i);
+        }
+
+        ShuffleCards();
+
+        cards = new List<Cards>();
+
+        foreach (int id in cardIDs)
+        {
+            Cards newCard = Instantiate(cardPrefab, cardHolder);
+            newCard.gameManager = this;
+            newCard.cardID = id;// Assign ID here AFTER shuffle
+            newCard.ResetCard();
+            cards.Add(newCard);
+
         }
     }
 
@@ -97,12 +151,7 @@ public class GameManager : MonoBehaviour
             int randomIndex = Random.Range(i, cardIDs.Count);
             int temp = cardIDs[i];
             cardIDs[i] = cardIDs[randomIndex];
-            cardIDs[randomIndex] = temp;    
-        }
-
-        for(int i = 0;i < cardIDs.Count;i++)
-        {
-            cards[i].cardID = cardIDs[i]; // assinging the card ids of shuffled cards to the cards
+            cardIDs[randomIndex] = temp;
         }
     }
 
@@ -123,9 +172,15 @@ public class GameManager : MonoBehaviour
 
     void CheckMatch()
     {
-        if(firstCard.cardID == secondCard.cardID)
+        movesPlayed++; // increases
+
+        if (firstCard.cardID == secondCard.cardID)
         {
             pairsMatched++; // increment to pairsmatched as the cards match
+            score += 2;
+
+            firstCard.SetMatched(true);
+            secondCard.SetMatched(true);
 
             if (pairsMatched == totalPairs) // to check if the level is finished or not
             {
@@ -143,11 +198,19 @@ public class GameManager : MonoBehaviour
 
     IEnumerator FlipBackCards()
     {
-        yield return new WaitForSeconds(1f); // delay of 1 second
-        firstCard.HideCard();
-        secondCard.HideCard();
-        firstCard = null;
-        secondCard = null;  
+            yield return new WaitForSeconds(1f);
+
+        if (firstCard != null)
+        {
+            firstCard.HideCard();
+        }   
+        if (secondCard != null)
+        {
+            secondCard.HideCard();
+        }
+            firstCard = null;
+            secondCard = null;
+        
     }
 
     void GameOver()
@@ -165,44 +228,39 @@ public class GameManager : MonoBehaviour
     public void FinalPanel()
     {
         finalUI.gameObject.SetActive(true);
-        if(isLevelFinished)
-        {
-            finalText.text = " Level Finished time Taken:  " + Mathf.Round(timer) + "s"; // add moves and final score
 
+        if (isLevelFinished)
+        {
+            finalText.text =
+                "Level Finished, Time Taken: " + Mathf.Round(timer) + "s\n" +
+                "Score is " + Mathf.Round(score) + " pts\n" +
+                "Moves Played: " + movesPlayed;
         }
         else if (isGameOver)
         {
-            finalText.text = " Game OVer ";
+            finalText.text = "Game Over\nMoves Played: " + movesPlayed;
         }
     }
-
 
     public void RestartGame()
     {
-        pairsMatched = 0;
-        timer = maxTime;
-        isGameOver = false;
-        isLevelFinished = false;
-        finalUI.gameObject.SetActive(false);    
-
-        //resetting the cards, use object pooling here if possible
-        foreach(var card in cards)
-        {
-            Destroy(card.gameObject);
-        }
-        cards.Clear();
-        cardIDs.Clear();
-
-        CreateCards();
-        ShuffleCards();
-
+        firstCard = null;
+        secondCard = null;
+        SetGameMode(currentMode);
     }
 
-    void UpdateTImerText()
+    void UpdateUI()
     {
         timerText.text = "time left " + Mathf.Round(timer) + "s";
+        scoreText.text = "Score: " + Mathf.Abs(score) + " pts";
+        if (movesText != null)
+        {
+            movesText.text = "Moves: " + movesPlayed;
+        }
     }
 }
+
+
 
 
 
