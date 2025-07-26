@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                //GameOver();
+                GameOver();
             }
 
         }
@@ -144,11 +144,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     void ShuffleCards()
     {
-        for (int i = 0; i < cardIDs.Count; i++)
+        for (int i = cardIDs.Count - 1; i > 0; i--)
         {
-            int randomIndex = Random.Range(i, cardIDs.Count);
+            int randomIndex = Random.Range(0, i + 1);
             int temp = cardIDs[i];
             cardIDs[i] = cardIDs[randomIndex];
             cardIDs[randomIndex] = temp;

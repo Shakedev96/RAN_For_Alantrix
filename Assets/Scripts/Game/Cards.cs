@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Cards : MonoBehaviour
+public class Cards : MonoBehaviour, IPointerClickHandler
 {
     public int cardID; 
 
@@ -18,6 +19,10 @@ public class Cards : MonoBehaviour
         ResetCard();
     }
 
+    public void OnPointerClick(PointerEventData eventData) // for android
+    {
+        FlipCard();
+    }
     
     public void FlipCard()
     {
