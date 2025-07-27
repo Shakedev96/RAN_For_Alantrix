@@ -10,8 +10,8 @@ public class MainMenuUI : MonoBehaviour
 {
     private GameManager.GameMode selectedMode = GameManager.GameMode.Easy; // default mode = easy mode
 
-    public TextMeshProUGUI leaderBoardText;
-    public GameObject leaderBoardPanel;
+    public TextMeshProUGUI leaderBoardTextEasy, leaderBoardTextMedium, leaderBoardTextHard;
+    public GameObject leaderboardParentPanel;
 
     public void OnEasyClicked()
     {
@@ -40,29 +40,40 @@ public class MainMenuUI : MonoBehaviour
 
     public void OnHighscoreClick()
     {
+        // Show parent panel (which contains all three)
+        leaderboardParentPanel.SetActive(true);
+
+        // Load scores
         HighScoreData dataBase = SaveSys.LoadHighScore();
-        if(dataBase.highScores.Count == 0 )
+
+        // For each mode, filter and show leaderboard
+        ShowModeLeaderboard(dataBase, "Easy", leaderBoardTextEasy);
+        ShowModeLeaderboard(dataBase, "Medium", leaderBoardTextMedium);
+        ShowModeLeaderboard(dataBase, "Hard", leaderBoardTextHard);
+    }
+    private void ShowModeLeaderboard(HighScoreData dataBase, string mode, TMP_Text textField)
+    {
+        var modeScores = dataBase.highScores.FindAll(e => e.diffMode == mode);
+
+        if (modeScores.Count == 0)
         {
-            leaderBoardText.text = "No HighScores saved yet";
+            textField.text = "No HighScores saved yet";
         }
         else
         {
-            string board = " ";
+            string board = "";
             int rank = 1;
-
-            foreach( var entry in dataBase.highScores)
+            foreach (var entry in modeScores)
             {
-                board += $"{rank}.{entry.userName} - Score:{entry.score}, Moves: {entry.moves}, Time: {entry.timerScore: 0.00}s\n ";
+                board += $"{rank}. {entry.userName} - Score:{entry.score}, Moves:{entry.moves}, Time:{entry.timerScore:0.00}s\n";
                 rank++;
             }
-            leaderBoardText.text = board;   
+            textField.text = board;
         }
-
-        leaderBoardPanel.SetActive(true);
     }
     public void OnCloseHighScore()
     {
-        leaderBoardPanel.SetActive(false);
+        leaderboardParentPanel.SetActive(false);
     }
 
     public void Quit()

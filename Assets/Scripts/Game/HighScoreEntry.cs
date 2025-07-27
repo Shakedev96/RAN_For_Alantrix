@@ -10,13 +10,15 @@ public class HighScoreEntry
     public int score;
     public float timerScore;
     public int moves;
+    public string diffMode;
 
-    public HighScoreEntry(string userName, int score,int moves, float timerScore)
+    public HighScoreEntry(string userName, int score,int moves, float timerScore, string diffMode)
     {
         this.userName = userName;
         this.score = score;
         this.timerScore = timerScore;
         this.moves = moves;
+        this.diffMode = diffMode;
     }
 
 

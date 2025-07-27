@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -61,16 +63,31 @@ public class GameUI : MonoBehaviour
         int score = GameManager.Instance.score;
         int moves = GameManager.Instance.movesPlayed;
         float time = GameManager.Instance.maxTime - GameManager.Instance.timer;
+        string mode = GameManager.Instance.currentMode.ToString();
 
         HighScoreData dataBase = SaveSys.LoadHighScore(); // to load current highscore list
-        dataBase.highScores.Add(new HighScoreEntry(username, score, moves, time)) ; // adding new entries
+        dataBase.highScores.Add(new HighScoreEntry(username, score, moves, time, mode)) ; // adding new entries
 
-        dataBase.highScores.Sort((a, b) => b.score.CompareTo(a.score));
-        if (dataBase.highScores.Count > 5)
+        //dataBase.highScores.Sort((a, b) => b.score.CompareTo(a.score));
+        //if (dataBase.highScores.Count > 5)
+        //{
+        //    dataBase.highScores.RemoveRange(5, dataBase.highScores.Count - 5);
+        //}
+        // only save top 5 entries per mode
+
+        string[] modes = { "Easy", "Medium", "Hard" };
+        foreach(var modeName in modes)
         {
-            dataBase.highScores.RemoveRange(5, dataBase.highScores.Count - 5);
-        }
+            var modeScores = dataBase.highScores.FindAll(e => e.diffMode == modeName).OrderByDescending(e => e.score).ToList();
+            if(modeScores.Count > 5)
+            {
+                foreach(var entry in modeScores.Skip(5))
+                {
+                    dataBase.highScores.Remove(entry);
+                }
+            }
 
+        }
 
         SaveSys.SaveHighScore(dataBase);
 
