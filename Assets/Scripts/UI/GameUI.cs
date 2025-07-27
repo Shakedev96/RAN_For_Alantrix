@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -7,6 +8,9 @@ using UnityEngine.UIElements;
 public class GameUI : MonoBehaviour
 {
     public GameObject pausePanel;
+
+    // for entering username
+    public TMP_InputField userNameInput;
 
     private void Awake()
     {
@@ -41,6 +45,37 @@ public class GameUI : MonoBehaviour
         }
         
         Time.timeScale = 0f;
+    }
+
+    public void OnSaveNameClick()
+    {
+        string username = userNameInput.text;
+
+        // if username empty ? Guest by default
+
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            username = "Guest";
+        }
+
+        int score = GameManager.Instance.score;
+        int moves = GameManager.Instance.movesPlayed;
+        float time = GameManager.Instance.maxTime - GameManager.Instance.timer;
+
+        HighScoreData dataBase = SaveSys.LoadHighScore(); // to load current highscore list
+        dataBase.highScores.Add(new HighScoreEntry(username, score, moves, time)) ; // adding new entries
+
+        dataBase.highScores.Sort((a, b) => b.score.CompareTo(a.score));
+        if (dataBase.highScores.Count > 5)
+        {
+            dataBase.highScores.RemoveRange(5, dataBase.highScores.Count - 5);
+        }
+
+
+        SaveSys.SaveHighScore(dataBase);
+
+
+
     }
 
     public void OnQuit()

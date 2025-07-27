@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 
 public class MainMenuUI : MonoBehaviour
 {
     private GameManager.GameMode selectedMode = GameManager.GameMode.Easy; // default mode = easy mode
+
+    public TextMeshProUGUI leaderBoardText;
+    public GameObject leaderBoardPanel;
 
     public void OnEasyClicked()
     {
@@ -32,33 +36,34 @@ public class MainMenuUI : MonoBehaviour
         GameManager.pendingMode= selectedMode;
         GameManager.usePendingMode = true;
         SceneManager.LoadScene(1);
-
-
-        //StartCoroutine(LoadGameSceneSetMode());
     }
 
-    //private IEnumerator LoadGameSceneSetMode()
-    //{
-    //    AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(1);
-        
-    //    while (!asyncLoad.isDone)
-    //    {
-    //        yield return null;
+    public void OnHighscoreClick()
+    {
+        HighScoreData dataBase = SaveSys.LoadHighScore();
+        if(dataBase.highScores.Count == 0 )
+        {
+            leaderBoardText.text = "No HighScores saved yet";
+        }
+        else
+        {
+            string board = " ";
+            int rank = 1;
 
-    //    }
-    //    // waits for on frame for gamemanager awake to load 
-    //    yield return null;
+            foreach( var entry in dataBase.highScores)
+            {
+                board += $"{rank}.{entry.userName} - Score:{entry.score}, Moves: {entry.moves}, Time: {entry.timerScore: 0.00}s\n ";
+                rank++;
+            }
+            leaderBoardText.text = board;   
+        }
 
-    //    if(GameManager.Instance != null)
-    //    {
-    //        GameManager.Instance.SetGameMode(selectedMode);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("GameManager Instance not found after scene load!");
-    //    }
-    //}
-
+        leaderBoardPanel.SetActive(true);
+    }
+    public void OnCloseHighScore()
+    {
+        leaderBoardPanel.SetActive(false);
+    }
 
     public void Quit()
     {

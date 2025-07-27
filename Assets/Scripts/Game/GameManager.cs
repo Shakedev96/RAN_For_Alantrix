@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
 public class GameManager : MonoBehaviour
 {
     public static GameMode pendingMode = GameMode.Easy;
@@ -31,13 +32,15 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI movesText;
 
+    
+
 
     private int pairsMatched;
     private int totalPairs;
-    private float timer;
+    public float timer;
     private bool isGameOver;
-    private int score;
-    private int movesPlayed;
+    public int score;
+    public int movesPlayed;
 
     private bool isLevelFinished;
 
@@ -144,7 +147,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     void ShuffleCards()
     {
         for (int i = cardIDs.Count - 1; i > 0; i--)
@@ -242,7 +244,6 @@ public class GameManager : MonoBehaviour
             finalText.text = "Game Over\nMoves Played: " + movesPlayed;
         }
     }
-
     public void RestartGame()
     {
         firstCard = null;
@@ -259,6 +260,8 @@ public class GameManager : MonoBehaviour
             movesText.text = "Moves: " + movesPlayed;
         }
     }
+
+    
 }
 
 
