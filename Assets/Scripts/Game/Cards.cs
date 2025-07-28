@@ -1,12 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class Cards : MonoBehaviour, IPointerClickHandler
 {
-    public int cardID; 
+    public int cardID;
 
     public GameManager gameManager;
 
@@ -29,7 +28,7 @@ public class Cards : MonoBehaviour, IPointerClickHandler
     {
         FlipCard();
     }
-    
+
     public void FlipCard()
     {
         if (isMatched) return;
@@ -38,9 +37,9 @@ public class Cards : MonoBehaviour, IPointerClickHandler
         {
             isFlipped = true;
             anim.SetTrigger("FlipFront");
-            
+
             StartCoroutine(ShowFrontImageDelayed());
-            
+
         }
     }
     IEnumerator ShowFrontImageDelayed()
@@ -69,7 +68,7 @@ public class Cards : MonoBehaviour, IPointerClickHandler
         isFlipped = false;
         anim.SetTrigger("FlipBack");
         StartCoroutine(ShowBackImageDelayed());
-        
+
     }
 
     IEnumerator ShowBackImageDelayed()
@@ -83,5 +82,3 @@ public class Cards : MonoBehaviour, IPointerClickHandler
         // add matched animation and sound here  
     }
 }
-
-

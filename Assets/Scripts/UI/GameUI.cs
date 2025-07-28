@@ -27,6 +27,7 @@ public class GameUI : MonoBehaviour
     public void OnBackClick()
     {
         Time.timeScale = 1.0f; // retun the time back to 1 
+        SoundSys.Instance.PlayClick();
         SceneManager.LoadScene(0); // goes back to main menu
     }
 
@@ -36,7 +37,7 @@ public class GameUI : MonoBehaviour
         {
             pausePanel.SetActive(false);
         }
-        
+        SoundSys.Instance.PlayClick();
         Time.timeScale = 1.0f;
     }
     public void OnPauseClick() // pause the game, stop the timer.
@@ -45,7 +46,7 @@ public class GameUI : MonoBehaviour
         {
             pausePanel.SetActive(true);
         }
-        
+        SoundSys.Instance.PlayClick();
         Time.timeScale = 0f;
     }
 
@@ -97,8 +98,8 @@ public class GameUI : MonoBehaviour
 
     public void OnQuit()
     {
-       
-    
+        SoundSys.Instance.PlayClick();
+
 #if UNITY_EDITOR
         // Stop play mode if in the Editor
         UnityEditor.EditorApplication.isPlaying = false;

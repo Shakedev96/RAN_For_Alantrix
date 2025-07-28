@@ -16,16 +16,19 @@ public class MainMenuUI : MonoBehaviour
     public void OnEasyClicked()
     {
         selectedMode = GameManager.GameMode.Easy;
+        SoundSys.Instance.PlayClick();
         Debug.Log("selected mode = " + selectedMode + "E");
     }
     public void OnMediumClicked()
     {
         selectedMode = GameManager.GameMode.Medium;
+        SoundSys.Instance.PlayClick();
         Debug.Log("selected mode = " + selectedMode + "M");
     }
     public void OnHardClicked()
     {
         selectedMode = GameManager.GameMode.Hard;
+        SoundSys.Instance.PlayClick();
         Debug.Log("selected mode = " + selectedMode + "H");
     }
     // (Link these to UI buttons in Inspector)
@@ -36,13 +39,14 @@ public class MainMenuUI : MonoBehaviour
         GameManager.pendingMode= selectedMode;
         GameManager.usePendingMode = true;
         SceneManager.LoadScene(1);
+        SoundSys.Instance.PlayClick();
     }
 
     public void OnHighscoreClick()
     {
         // Show parent panel (which contains all three)
         leaderboardParentPanel.SetActive(true);
-
+        SoundSys.Instance.PlayClick();
         // Load scores
         HighScoreData dataBase = SaveSys.LoadHighScore();
 
@@ -74,10 +78,12 @@ public class MainMenuUI : MonoBehaviour
     public void OnCloseHighScore()
     {
         leaderboardParentPanel.SetActive(false);
+        SoundSys.Instance.PlayClick();
     }
 
     public void Quit()
     {
+        SoundSys.Instance.PlayClick();
 #if UNITY_EDITOR
         // Stop play mode if in the Editor
         UnityEditor.EditorApplication.isPlaying = false;

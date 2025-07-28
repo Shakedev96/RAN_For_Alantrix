@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI movesText;
 
-    
+
 
 
     private int pairsMatched;
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
 
         finalUI.gameObject.SetActive(false);
 
-        if(usePendingMode)
+        if (usePendingMode)
         {
             SetGameMode(pendingMode);
             usePendingMode = false;
@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        if(gridLayout != null)
+        if (gridLayout != null)
         {
             gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             gridLayout.constraintCount = columns;
@@ -215,19 +215,19 @@ public class GameManager : MonoBehaviour
 
     IEnumerator FlipBackCards()
     {
-            yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
 
         if (firstCard != null)
         {
             firstCard.HideCard();
-        }   
+        }
         if (secondCard != null)
         {
             secondCard.HideCard();
         }
-            firstCard = null;
-            secondCard = null;
-        
+        firstCard = null;
+        secondCard = null;
+
     }
 
     void GameOver()
@@ -275,7 +275,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
 }
 
 

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SoundSys : MonoBehaviour
@@ -21,6 +20,7 @@ public class SoundSys : MonoBehaviour
     public AudioClip cardMismatch;
     public AudioClip levelFin;
     public AudioClip gameOver;
+    public AudioClip click;
 
 
     void Awake()
@@ -48,7 +48,7 @@ public class SoundSys : MonoBehaviour
         
     }
 
-    void PlayMusic()
+    public void PlayMusic()
     {
         if (BGMClip != null && musicSource != null)
         {
@@ -79,6 +79,10 @@ public class SoundSys : MonoBehaviour
     public void PlayLevelFin()
     {
         PlaySFX(levelFin);
+    }
+    public void PlayClick()
+    {
+        PlaySFX(click);
     }
     
     public void PlayGameOVer()
