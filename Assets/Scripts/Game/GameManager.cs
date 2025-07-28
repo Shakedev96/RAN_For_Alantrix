@@ -199,13 +199,13 @@ public class GameManager : MonoBehaviour
 
             firstCard.SetMatched(true);
             secondCard.SetMatched(true);
-
+            SoundSys.Instance.PlayCardMatch(); 
             if (pairsMatched == totalPairs) // to check if the level is finished or not
             {
                 LevelFinished();
             }
 
-            firstCard = null;// resetting the cards back
+            firstCard = null;
             secondCard = null;
         }
         else
@@ -255,12 +255,14 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         FinalPanel();
+        SoundSys.Instance.PlayGameOVer();
     }
 
     void LevelFinished()
     {
         isLevelFinished = true;
         FinalPanel();
+        SoundSys.Instance.PlayLevelFin();
     }
 
     public void FinalPanel()

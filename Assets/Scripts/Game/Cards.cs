@@ -33,7 +33,9 @@ public class Cards : MonoBehaviour, IPointerClickHandler
         {
             return;
         }
+
         FlipCard();
+        
     }
 
     public void FlipCard()
@@ -44,7 +46,7 @@ public class Cards : MonoBehaviour, IPointerClickHandler
         {
             isFlipped = true;
             anim.SetTrigger("FlipFront");
-
+            SoundSys.Instance.PlayCardFlip();
             StartCoroutine(ShowFrontImageDelayed());
 
         }
@@ -74,6 +76,7 @@ public class Cards : MonoBehaviour, IPointerClickHandler
     {
         isFlipped = false;
         anim.SetTrigger("FlipBack");
+        SoundSys.Instance.PlayCardFlip();
         StartCoroutine(ShowBackImageDelayed());
 
     }
@@ -96,6 +99,7 @@ public class Cards : MonoBehaviour, IPointerClickHandler
     {
         Debug.LogError("Memorise them cards");
         isFlipped = true;
+        SoundSys.Instance.PlayCardFlip();
         if(cardImage != null && gameManager != null)
         {
             cardImage.sprite = gameManager.cardFaces[cardID];
@@ -106,7 +110,8 @@ public class Cards : MonoBehaviour, IPointerClickHandler
     {
         Debug.LogError("Cards are Hidden now");
         isFlipped = false;
-        if(cardImage != null && gameManager != null && gameManager.cardBack != null)
+        SoundSys.Instance.PlayCardFlip();
+        if (cardImage != null && gameManager != null && gameManager.cardBack != null)
         {
             cardImage.sprite = gameManager.cardBack;
         }
