@@ -3,8 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+
 public class Cards : MonoBehaviour, IPointerClickHandler
 {
+    public bool isInteractable = true; // new => controls interaction 
+
     public int cardID;
 
     public GameManager gameManager;
@@ -21,11 +24,15 @@ public class Cards : MonoBehaviour, IPointerClickHandler
 
     void Start()
     {
-        ResetCard();
+        //ResetCard();
     }
 
     public void OnPointerClick(PointerEventData eventData) // for android
     {
+        if (!isInteractable) // new => to block interaction during preview
+        {
+            return;
+        }
         FlipCard();
     }
 
@@ -80,5 +87,28 @@ public class Cards : MonoBehaviour, IPointerClickHandler
     {
         isMatched = matched;
         // add matched animation and sound here  
+    }
+
+
+    // new => to show face, helps in preview
+
+    public void ShowFace()
+    {
+        Debug.LogError("Memorise them cards");
+        isFlipped = true;
+        if(cardImage != null && gameManager != null)
+        {
+            cardImage.sprite = gameManager.cardFaces[cardID];
+        }
+    }
+
+    public void ShowBack()
+    {
+        Debug.LogError("Cards are Hidden now");
+        isFlipped = false;
+        if(cardImage != null && gameManager != null && gameManager.cardBack != null)
+        {
+            cardImage.sprite = gameManager.cardBack;
+        }
     }
 }

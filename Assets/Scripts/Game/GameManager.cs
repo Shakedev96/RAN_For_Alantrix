@@ -132,6 +132,7 @@ public class GameManager : MonoBehaviour
         cardIDs.Clear();
 
         GenerateBoard();
+        StartCoroutine(PreviewCoroutine(GetPreviewTimeMode(currentMode)));
 
         finalUI.SetActive(false);
         UpdateUI();
@@ -230,6 +231,26 @@ public class GameManager : MonoBehaviour
 
     }
 
+    // new => Coroutine for checking preview time for cards
+
+    IEnumerator PreviewCoroutine(float previewTime)
+    {
+        Debug.Log("Coroutine started");
+        foreach(var card in cards) // reveals cards as per preview time
+        {
+            card.ShowFace();
+            card.isInteractable = false ;
+        }
+        yield return new WaitForSeconds(previewTime);
+
+        foreach(var card in cards) // hides the face after preview time is over
+        {
+            card.ShowBack();
+            card.isInteractable = true ;
+        }
+
+    }
+
     void GameOver()
     {
         isGameOver = true;
@@ -275,6 +296,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    float GetPreviewTimeMode(GameMode mode)
+    {
+        switch (mode)
+        {
+            case GameMode.Easy: return 2f;
+            case GameMode.Medium: return 4f;
+            case GameMode.Hard: return 6f;
+            default: return 2f;
+        }
+
+    }
 
 }
 
