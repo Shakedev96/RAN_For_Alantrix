@@ -10,9 +10,15 @@ public class Cards : MonoBehaviour, IPointerClickHandler
 
     public GameManager gameManager;
 
+    private Animator anim;
+
     public bool isFlipped = false;
     public bool isMatched = false;
     public Image cardImage;
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     void Start()
     {
@@ -31,9 +37,17 @@ public class Cards : MonoBehaviour, IPointerClickHandler
         if (!isFlipped && (gameManager.firstCard == null || gameManager.secondCard == null))
         {
             isFlipped = true;
-            cardImage.sprite = gameManager.cardFaces[cardID];
-            gameManager.CardFlipped(this);
+            anim.SetTrigger("FlipFront");
+            
+            StartCoroutine(ShowFrontImageDelayed());
+            
         }
+    }
+    IEnumerator ShowFrontImageDelayed()
+    {
+        yield return new WaitForSeconds(0.5f);
+        cardImage.sprite = gameManager.cardFaces[cardID];
+        gameManager.CardFlipped(this);
     }
 
     public void ResetCard()
@@ -53,6 +67,14 @@ public class Cards : MonoBehaviour, IPointerClickHandler
     public void HideCard()
     {
         isFlipped = false;
+        anim.SetTrigger("FlipBack");
+        StartCoroutine(ShowBackImageDelayed());
+        
+    }
+
+    IEnumerator ShowBackImageDelayed()
+    {
+        yield return new WaitForSeconds(0.5f);
         cardImage.sprite = gameManager.cardBack;
     }
     public void SetMatched(bool matched)

@@ -78,7 +78,7 @@ public class GameUI : MonoBehaviour
         string[] modes = { "Easy", "Medium", "Hard" };
         foreach(var modeName in modes)
         {
-            var modeScores = dataBase.highScores.FindAll(e => e.diffMode == modeName).OrderByDescending(e => e.score).ToList();
+            var modeScores = dataBase.highScores.FindAll(e => e.diffMode == modeName).OrderByDescending(e => e.score).ThenBy(e => e.moves).ThenBy(e => e.timerScore).ToList();
             if(modeScores.Count > 5)
             {
                 foreach(var entry in modeScores.Skip(5))
