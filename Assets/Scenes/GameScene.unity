@@ -1290,7 +1290,7 @@ MonoBehaviour:
   m_CellSize: {x: 150, y: 200}
   m_Spacing: {x: 60, y: 60}
   m_Constraint: 1
-  m_ConstraintCount: 4
+  m_ConstraintCount: 7
 --- !u!114 &433052105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4187,21 +4187,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd86c5f13315fdf44b768576b5fd6cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridLayout: {fileID: 433052104}
   currentMode: 0
   cardPrefab: {fileID: 3659180876591396403, guid: 95d510b6f726a90429fb64fb6abf4a08, type: 3}
   cardBack: {fileID: 21300000, guid: 7e7d34bbdf066114dbcc86a41982a307, type: 3}
   cardFaces:
   - {fileID: 21300000, guid: 6cd66117ace03974ca96215fe7ed3454, type: 3}
+  - {fileID: 21300000, guid: 926e1a90e2fe4ab43a60c17523f1391d, type: 3}
+  - {fileID: 21300000, guid: bccc1d3822ae71c478f2552b3f861a37, type: 3}
   - {fileID: 21300000, guid: e20381605ce085e4d8ddad33ccfcee22, type: 3}
+  - {fileID: 21300000, guid: b2add818f14ea974895570d47c7b4ce7, type: 3}
   - {fileID: 21300000, guid: d4f44ae0e54c95744ae725f7b85a99ac, type: 3}
   - {fileID: 21300000, guid: 0bd0b423eb03f8446adf64a5259a3773, type: 3}
+  - {fileID: 21300000, guid: cc520d8e50f392949babe3f752123109, type: 3}
+  - {fileID: 21300000, guid: 85f7898a08e0f3c42b05e69e87abce89, type: 3}
+  - {fileID: 21300000, guid: 1b4b6f244220e1c43bac3ece3d5f1b8e, type: 3}
+  - {fileID: 21300000, guid: 70cda669baa248040865e28fd5c41dd4, type: 3}
   - {fileID: 21300000, guid: 924a44cca9411b24397cc2b1de52adbc, type: 3}
+  - {fileID: 21300000, guid: 1673c0cbf44be6940b2116408afbf678, type: 3}
   - {fileID: 21300000, guid: 45d285d877ef06a4cba9f8168f0e0832, type: 3}
   - {fileID: 21300000, guid: 6cd66117ace03974ca96215fe7ed3454, type: 3}
+  - {fileID: 21300000, guid: 926e1a90e2fe4ab43a60c17523f1391d, type: 3}
+  - {fileID: 21300000, guid: bccc1d3822ae71c478f2552b3f861a37, type: 3}
   - {fileID: 21300000, guid: e20381605ce085e4d8ddad33ccfcee22, type: 3}
+  - {fileID: 21300000, guid: b2add818f14ea974895570d47c7b4ce7, type: 3}
   - {fileID: 21300000, guid: d4f44ae0e54c95744ae725f7b85a99ac, type: 3}
   - {fileID: 21300000, guid: 0bd0b423eb03f8446adf64a5259a3773, type: 3}
+  - {fileID: 21300000, guid: cc520d8e50f392949babe3f752123109, type: 3}
+  - {fileID: 21300000, guid: 85f7898a08e0f3c42b05e69e87abce89, type: 3}
+  - {fileID: 21300000, guid: 1b4b6f244220e1c43bac3ece3d5f1b8e, type: 3}
+  - {fileID: 21300000, guid: 70cda669baa248040865e28fd5c41dd4, type: 3}
   - {fileID: 21300000, guid: 924a44cca9411b24397cc2b1de52adbc, type: 3}
+  - {fileID: 21300000, guid: 1673c0cbf44be6940b2116408afbf678, type: 3}
   - {fileID: 21300000, guid: 45d285d877ef06a4cba9f8168f0e0832, type: 3}
   firstCard: {fileID: 0}
   secondCard: {fileID: 0}

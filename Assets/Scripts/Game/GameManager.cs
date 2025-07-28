@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GameManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
     public static bool usePendingMode = false;
 
     public static GameManager Instance;
+
+    public GridLayoutGroup gridLayout;
 
     public enum GameMode { Easy, Medium, Hard }
     public GameMode currentMode;
@@ -89,17 +92,28 @@ public class GameManager : MonoBehaviour
         currentMode = mode;
         Debug.Log("SetGameMode called with mode: " + mode);
 
+        int columns = 4; // default 
+
         switch (mode)
         {
             case GameMode.Easy:
-                totalPairs = 2; 
+                totalPairs = 4;
+                columns = 4;
                 break;
             case GameMode.Medium:
-                totalPairs = 4;
+                totalPairs = 8;
+                columns = 4;
                 break;
             case GameMode.Hard:
-                totalPairs = 6;
+                totalPairs = 14;
+                columns = 7;
                 break;
+        }
+
+        if(gridLayout != null)
+        {
+            gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            gridLayout.constraintCount = columns;
         }
 
         Debug.Log("SetGameMode(): timer=" + timer);
