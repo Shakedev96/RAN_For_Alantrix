@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1947646ff28751942be0d90b87ce189b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 1
   cardID: 0
   gameManager: {fileID: 0}
   isFlipped: 0

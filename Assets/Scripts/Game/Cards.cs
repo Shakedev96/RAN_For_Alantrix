@@ -8,6 +8,9 @@ public class Cards : MonoBehaviour, IPointerClickHandler
 {
     public bool isInteractable = true; // new => controls interaction 
 
+    public bool isFaceUp = false;
+    
+
     public int cardID;
 
     public GameManager gameManager;
@@ -93,14 +96,13 @@ public class Cards : MonoBehaviour, IPointerClickHandler
     }
 
 
-    // new => to show face, helps in preview
+
 
     public void ShowFace()
     {
-        Debug.LogError("Memorise them cards");
+        
         isFlipped = true;
-        SoundSys.Instance.PlayCardFlip();
-        if(cardImage != null && gameManager != null)
+        if (cardImage != null && gameManager != null)
         {
             cardImage.sprite = gameManager.cardFaces[cardID];
         }
@@ -108,7 +110,7 @@ public class Cards : MonoBehaviour, IPointerClickHandler
 
     public void ShowBack()
     {
-        Debug.LogError("Cards are Hidden now");
+        
         isFlipped = false;
         SoundSys.Instance.PlayCardFlip();
         if (cardImage != null && gameManager != null && gameManager.cardBack != null)
@@ -116,4 +118,11 @@ public class Cards : MonoBehaviour, IPointerClickHandler
             cardImage.sprite = gameManager.cardBack;
         }
     }
+
+    
+    
+
+    
+
+
 }

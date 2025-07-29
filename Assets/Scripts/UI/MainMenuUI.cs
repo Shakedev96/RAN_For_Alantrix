@@ -69,7 +69,7 @@ public class MainMenuUI : MonoBehaviour
             int rank = 1;
             foreach (var entry in modeScores)
             {
-                board += $"{rank}. {entry.userName} -Score:{entry.score},Moves:{entry.moves},Time:{entry.timerScore:0.00}s\n";
+                board += $"{rank}. {entry.userName} -Score:{entry.score},Moves:{entry.moves},\nTime:{entry.timerScore:0.0}s\n";
                 rank++;
             }
             textField.text = board;
